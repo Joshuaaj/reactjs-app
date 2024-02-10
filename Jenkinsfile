@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = credentials('dockerHubUsername')
-        DOCKER_PASSWORD = credentials('dockerHubPassword')
+        DOCKER_USERNAME = joshuajoz123867
+        DOCKER_PASSWORD = dckr_pat_VZv-_SuI4XFS9x7v2YnhXYN1mHs
     }
 
     stages {
@@ -19,7 +19,8 @@ pipeline {
             }
             steps {
                 sh '''
-                docker build -t ${DOCKER_USERNAME}/dev:latest .
+                echo "$DOCKER_USERNAME"
+		docker build -t ${DOCKER_USERNAME}/dev:latest .
                 docker login -u ${DOCKER_USERNAME} --password-stdin <<< ${DOCKER_PASSWORD}
                 docker push ${DOCKER_USERNAME}/dev:latest
                 '''
