@@ -17,9 +17,9 @@ pipeline {
             steps {
                 script {
                     // Log in to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'your-docker-hub-credentials-id', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dckr_pat_VZv-_SuI4XFS9x7v2YnhXYN1mHs', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         // Build Docker image
-                        dockerImage = docker.build('your-docker-image-name')
+                        dockerImage = docker.build('reactjs-app-web')
 
                         // Push Docker image to Docker Hub
                         docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_USERNAME', 'DOCKER_PASSWORD') {
