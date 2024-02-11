@@ -17,7 +17,7 @@ pipeline{
         stage('Build') {
 
             steps {
-                sh 'docker build -t Joshuaaj/reactjs-app:latest .'
+                sh 'docker build -t joshuajoz123867/reactjs-app:latest .'
             }
         }
 
@@ -31,7 +31,7 @@ pipeline{
         stage('Push') {
 
             steps {
-                sh 'docker push Joshuaaj/reactjs-app:latest'
+                sh 'docker push joshuajoz123867/reactjs-app:latest'
             }
         }
     }
