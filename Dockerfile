@@ -1,4 +1,4 @@
-FROM node:14 AS builder
+FROM node:16 AS builder
 WORKDIR /react-app
 COPY package*.json ./
 RUN npm install 
