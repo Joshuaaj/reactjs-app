@@ -1,24 +1,45 @@
-pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'docker build -t reactjs-app-web .'
-            }
-        }
-        stage('Push to Docker Hub') {
-            steps {
-                sh 'docker push joshuajoz123867/dev/reactjs-app-web'
-            }
-        }
-        stage('Deploy') {
-            steps {
-           	sh 'docker pull joshuajoz123867/dev/reactjs-app-web'
-	    	sh 'docker stop reactjs-app-web || true'
-	    	sh 'docker rm reactjs-app-web || true'
-	    	sh 'docker run -d --name reactjs-app-web -p 80:80 joshuajoz123867/dev/reactjs-app-web:latest'
-    }
-        }
-    }
-}
+pipeline{
 
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub-credentials')
+    }
+
+    stages {
+        
+        stage('gitclone') {
+
+            steps {
+                git 'https://github.com/Joshuaaj/reactjs-app.git'
+            }
+        }
+
+        stage('Build') {
+
+            steps {
+                sh 'docker build -t Joshuaaj/reactjs-app:latest .'
+            }
+        }
+
+        stage('Login') {
+
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('Push') {
+
+            steps {
+                sh 'docker push Joshuaaj/reactjs-app:latest'
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
+
+}
