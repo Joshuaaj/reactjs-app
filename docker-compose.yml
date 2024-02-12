@@ -1,6 +1,6 @@
 version: '3'
 services:
    reactjs:
-     image: joshuajoz123867/dev
+     image: reactjs-app-web
     ports:
       - "80:80"
