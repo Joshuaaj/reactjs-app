@@ -2,5 +2,5 @@
 
 docker build -t reactjs-app-web .
 
-docker tag react joshuajoz123867/dev:capstone
+docker tag reactjs-app-web joshuajoz123867/dev:capstone
 
