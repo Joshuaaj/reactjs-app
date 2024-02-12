@@ -1,44 +1,31 @@
-pipeline{
+pipeline {
+  agent any
 
-    agent any
-    environment {
-        DOCKERHUB_CREDENTIALS=credentials('dockerhub-credentials')
+  stages {
+    stage('Build') {
+      steps {
+        sh 'chmod +x build.sh'
+        sh './build.sh'
+      }
     }
-
-    stages {
-        
-        stage('gitclone') {
-
-            steps {
-                git 'https://github.com/Joshuaaj/reactjs-app.git'
-            }
+    
+    stage('Deploy') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+            sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
+            sh 'docker push indhirarv/dev:capstone'
         }
-
-        stage('Build') {
-
-            steps {
-                sh 'docker build -t joshuajoz123867/reactjs-app:latest .'
-            }
-        }
-
-        stage('Login') {
-
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-
-        stage('Push') {
-
-            steps {
-                sh 'docker push joshuajoz123867/reactjs-app:latest'
-            }
-        }
+      }
     }
+    
+  }
 
-    post {
-        always {
-            sh 'docker logout'
+post{
+      always{
+            sh 'chmod +x deploy.sh'
+            sh './deploy.sh'
+            
+            
         }
     }
 
